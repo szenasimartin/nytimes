@@ -20,11 +20,11 @@ public class ArticleDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
 
-
         // Show the Up button in the action bar.
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("");
         }
 
         // savedInstanceState is non-null when there is fragment state
@@ -62,9 +62,12 @@ public class ArticleDetailActivity extends AppCompatActivity {
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
             //
+            supportFinishAfterTransition();
             navigateUpTo(new Intent(this, ArticleListActivity.class));
+
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }

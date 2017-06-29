@@ -3,7 +3,9 @@ package wup.android.exercise.nytimes.ui.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -28,7 +31,8 @@ import wup.android.exercise.nytimes.ui.detail.ArticleDetailFragment;
 public class ArticleAdapter
         extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
 
-    private final List<Article> values;
+    private List<Article> values;
+    private final List<Article> itemsCopy;
     private Context context;
     private boolean twoPane;
 
@@ -36,6 +40,7 @@ public class ArticleAdapter
         this.context = activity;
         this.twoPane = twoPane;
         values = items;
+        itemsCopy = new ArrayList<>(items);
 
     }
 
@@ -50,8 +55,8 @@ public class ArticleAdapter
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.item = values.get(position);
         holder.title.setText(values.get(position).getTitle());
-        if (!values.get(position).getDesFacet().isEmpty()) {
-            holder.created.setText(values.get(position).getDesFacet().get(0));
+        if (values.get(position).getByline()!=null) {
+            holder.created.setText(values.get(position).getByline());
         }
 
         holder.date.setText(values.get(position).getPublishedDate());
@@ -79,8 +84,14 @@ public class ArticleAdapter
                     Intent intent = new Intent(context, ArticleDetailActivity.class);
                     intent.putExtra(ArticleDetailFragment.ARG_ITEM_URL, holder.item.getUrl());
                     intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, holder.item.getTitle());
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((AppCompatActivity)context, holder.title, holder.title.getTransitionName());
+                        context.startActivity(intent, options.toBundle());
+                    } else {
+                        context.startActivity(intent);
+                    }
 
-                    context.startActivity(intent);
+
                 }
             }
         });
@@ -112,5 +123,20 @@ public class ArticleAdapter
         public String toString() {
             return super.toString() + " '" + date.getText() + "'";
         }
+    }
+
+    public void filter(String text) {
+        values.clear();
+        if(text.isEmpty()){
+            values.addAll(itemsCopy);
+        } else{
+            text = text.toLowerCase();
+            for(Article item: itemsCopy){
+                if(item.getTitle().toLowerCase().contains(text)){
+                    values.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 }

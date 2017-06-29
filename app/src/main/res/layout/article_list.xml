@@ -6,8 +6,6 @@
     android:name="wup.android.exercise.nytimes.ArticleListFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context="wup.android.exercise.nytimes.ui.list.ArticleListActivity"
     tools:listitem="@layout/article_list_content" />
