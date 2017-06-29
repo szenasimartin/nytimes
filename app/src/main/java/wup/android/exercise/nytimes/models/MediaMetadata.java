@@ -6,7 +6,7 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class MediaMetadatum implements Parcelable
+public class MediaMetadata implements Parcelable
 {
 
     @SerializedName("url")
@@ -21,14 +21,14 @@ public class MediaMetadatum implements Parcelable
     @SerializedName("width")
     @Expose
     private Integer width;
-    public final static Parcelable.Creator<MediaMetadatum> CREATOR = new Creator<MediaMetadatum>() {
+    public final static Parcelable.Creator<MediaMetadata> CREATOR = new Creator<MediaMetadata>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public MediaMetadatum createFromParcel(Parcel in) {
-            MediaMetadatum instance = new MediaMetadatum();
+        public MediaMetadata createFromParcel(Parcel in) {
+            MediaMetadata instance = new MediaMetadata();
             instance.url = ((String) in.readValue((String.class.getClassLoader())));
             instance.format = ((String) in.readValue((String.class.getClassLoader())));
             instance.height = ((Integer) in.readValue((Integer.class.getClassLoader())));
@@ -36,8 +36,8 @@ public class MediaMetadatum implements Parcelable
             return instance;
         }
 
-        public MediaMetadatum[] newArray(int size) {
-            return (new MediaMetadatum[size]);
+        public MediaMetadata[] newArray(int size) {
+            return (new MediaMetadata[size]);
         }
 
     }

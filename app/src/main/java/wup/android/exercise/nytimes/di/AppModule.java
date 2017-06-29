@@ -20,6 +20,8 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import wup.android.exercise.nytimes.BuildConfig;
 import wup.android.exercise.nytimes.Constants;
+import wup.android.exercise.nytimes.json.ArticleDeserializer;
+import wup.android.exercise.nytimes.models.Article;
 
 @Module
 public class AppModule {
@@ -28,7 +30,7 @@ public class AppModule {
     @Singleton
     Gson provideGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
-        return gsonBuilder.create();
+        return gsonBuilder.registerTypeAdapter(Article.class, new ArticleDeserializer()).create();
     }
 
     @Provides

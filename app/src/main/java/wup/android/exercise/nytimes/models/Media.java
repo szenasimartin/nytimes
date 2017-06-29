@@ -4,11 +4,11 @@ package wup.android.exercise.nytimes.models;
 import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Medium implements Parcelable
+public class Media implements Parcelable
 {
 
     @SerializedName("type")
@@ -28,26 +28,26 @@ public class Medium implements Parcelable
     private Integer approvedForSyndication;
     @SerializedName("media-metadata")
     @Expose
-    private List<MediaMetadatum> mediaMetadata = null;
-    public final static Parcelable.Creator<Medium> CREATOR = new Creator<Medium>() {
+    private List<MediaMetadata> mediaMetadata = null;
+    public final static Parcelable.Creator<Media> CREATOR = new Creator<Media>() {
 
 
         @SuppressWarnings({
             "unchecked"
         })
-        public Medium createFromParcel(Parcel in) {
-            Medium instance = new Medium();
+        public Media createFromParcel(Parcel in) {
+            Media instance = new Media();
             instance.type = ((String) in.readValue((String.class.getClassLoader())));
             instance.subtype = ((String) in.readValue((String.class.getClassLoader())));
             instance.caption = ((String) in.readValue((String.class.getClassLoader())));
             instance.copyright = ((String) in.readValue((String.class.getClassLoader())));
             instance.approvedForSyndication = ((Integer) in.readValue((Integer.class.getClassLoader())));
-            in.readList(instance.mediaMetadata, (MediaMetadatum.class.getClassLoader()));
+            in.readList(instance.mediaMetadata, (MediaMetadata.class.getClassLoader()));
             return instance;
         }
 
-        public Medium[] newArray(int size) {
-            return (new Medium[size]);
+        public Media[] newArray(int size) {
+            return (new Media[size]);
         }
 
     }
@@ -93,11 +93,11 @@ public class Medium implements Parcelable
         this.approvedForSyndication = approvedForSyndication;
     }
 
-    public List<MediaMetadatum> getMediaMetadata() {
+    public List<MediaMetadata> getMediaMetadata() {
         return mediaMetadata;
     }
 
-    public void setMediaMetadata(List<MediaMetadatum> mediaMetadata) {
+    public void setMediaMetadata(List<MediaMetadata> mediaMetadata) {
         this.mediaMetadata = mediaMetadata;
     }
 

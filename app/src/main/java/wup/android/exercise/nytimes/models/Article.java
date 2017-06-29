@@ -49,7 +49,22 @@ public class Article implements Parcelable
     private Long assetId;
     @SerializedName("views")
     @Expose
-    private String geoFacet;
+    private Integer views;
+    @SerializedName("des_facet")
+    @Expose
+    private List<String> desFacet;
+    @SerializedName("org_facet")
+    @Expose
+    private List<String> orgFacet;
+    @SerializedName("per_facet")
+    @Expose
+    private List<String> perFacet = null;
+    @SerializedName("geo_facet")
+    @Expose
+    private List<String> geoFacet;
+    @SerializedName("media")
+    @Expose
+    private List<Media> media = null;
     public final static Parcelable.Creator<Article> CREATOR = new Creator<Article>() {
 
 
@@ -70,12 +85,12 @@ public class Article implements Parcelable
             instance.source = ((String) in.readValue((String.class.getClassLoader())));
             instance.id = ((Long) in.readValue((Integer.class.getClassLoader())));
             instance.assetId = ((Long) in.readValue((Integer.class.getClassLoader())));
-           /* instance.views = ((Integer) in.readValue((Integer.class.getClassLoader())));
+            instance.views = ((Integer) in.readValue((Integer.class.getClassLoader())));
             in.readList(instance.desFacet, (java.lang.String.class.getClassLoader()));
             in.readList(instance.orgFacet, (java.lang.String.class.getClassLoader()));
-            in.readList(instance.perFacet, (java.lang.String.class.getClassLoader()));*/
-            instance.geoFacet = ((String) in.readValue((String.class.getClassLoader())));
-            /*in.readList(instance.media, (Medium.class.getClassLoader()));*/
+            in.readList(instance.perFacet, (java.lang.String.class.getClassLoader()));
+            in.readList(instance.geoFacet, (java.lang.String.class.getClassLoader()));
+            in.readList(instance.media, (Media.class.getClassLoader()));
             return instance;
         }
 
@@ -182,7 +197,7 @@ public class Article implements Parcelable
         this.assetId = assetId;
     }
 
-   /* public Integer getViews() {
+    public Integer getViews() {
         return views;
     }
 
@@ -212,23 +227,23 @@ public class Article implements Parcelable
 
     public void setPerFacet(List<String> perFacet) {
         this.perFacet = perFacet;
-    }*/
+    }
 
-    public String getGeoFacet() {
+    public List<String> getGeoFacet() {
         return geoFacet;
     }
 
-    public void setGeoFacet(String geoFacet) {
+    public void setGeoFacet(List<String> geoFacet) {
         this.geoFacet = geoFacet;
     }
 
-   /* public List<Medium> getMedia() {
+    public List<Media> getMedia() {
         return media;
     }
 
-    public void setMedia(List<Medium> media) {
+    public void setMedia(List<Media> media) {
         this.media = media;
-    }*/
+    }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(url);
@@ -243,12 +258,12 @@ public class Article implements Parcelable
         dest.writeValue(source);
         dest.writeValue(id);
         dest.writeValue(assetId);
-        /*dest.writeValue(views);
+        dest.writeValue(views);
         dest.writeValue(desFacet);
         dest.writeValue(orgFacet);
-        dest.writeList(perFacet);*/
+        dest.writeList(perFacet);
         dest.writeValue(geoFacet);
-        /*dest.writeList(media);*/
+        dest.writeList(media);
     }
 
     public int describeContents() {

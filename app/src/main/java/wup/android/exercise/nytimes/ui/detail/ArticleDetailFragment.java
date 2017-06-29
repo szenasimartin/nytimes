@@ -7,15 +7,17 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 
 import wup.android.exercise.nytimes.R;
-import wup.android.exercise.nytimes.dummy.DummyContent;
-import wup.android.exercise.nytimes.ui.list.ArticleListActivity;
 
 public class ArticleDetailFragment extends Fragment {
-    public static final String ARG_ITEM_ID = "item_id";
-    private DummyContent.DummyItem mItem;
+    public static final String ARG_ITEM_URL = "item_url";
+    public static final String ARG_ITEM_TITLE = "item_title";
+    private String url;
+    private String title;
+
     public ArticleDetailFragment() {
     }
 
@@ -23,16 +25,13 @@ public class ArticleDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
-            mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
-
+        if (getArguments().containsKey(ARG_ITEM_URL) && getArguments().containsKey(ARG_ITEM_TITLE)) {
+            url = getArguments().getString(ARG_ITEM_URL);
+            title = getArguments().getString(ARG_ITEM_TITLE);
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(mItem.content);
+                appBarLayout.setTitle(title);
             }
         }
     }
@@ -42,11 +41,24 @@ public class ArticleDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.article_detail, container, false);
 
-        // Show the dummy content as text in a TextView.
-        if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.article_detail)).setText(mItem.details);
+
+        if (url != null) {
+            WebView webView = (WebView) rootView.findViewById(R.id.article_detail);
+            webView.loadUrl(url);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.getSettings().setSaveFormData(true);
+            webView.getSettings().setBuiltInZoomControls(true);
+            webView.setWebViewClient(new MyWebViewClient());
         }
 
         return rootView;
+    }
+
+    private class MyWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
     }
 }
