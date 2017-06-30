@@ -22,6 +22,11 @@ import wup.android.exercise.nytimes.BuildConfig;
 import wup.android.exercise.nytimes.Constants;
 import wup.android.exercise.nytimes.json.ArticleDeserializer;
 import wup.android.exercise.nytimes.models.Article;
+import wup.android.exercise.nytimes.repository.NYTimesApi;
+import wup.android.exercise.nytimes.repository.NYTimesRepository;
+import wup.android.exercise.nytimes.repository.NYTimesRepositoryImpl;
+import wup.android.exercise.nytimes.ui.list.ArticleListPresenter;
+import wup.android.exercise.nytimes.ui.list.ArticleListPresenterImpl;
 
 @Module
 public class AppModule {
@@ -72,4 +77,18 @@ public class AppModule {
                 .addCallAdapterFactory(callAdapterFactory)
                 .build();
     }
+
+    @Provides
+    @Singleton
+    NYTimesRepository provideNYTimesRepository(Retrofit retrofit) {
+        return new NYTimesRepositoryImpl(retrofit);
+    }
+
+    @Provides
+    @Singleton
+    ArticleListPresenter provideArticleListPresenter(NYTimesRepository repository) {
+        return new ArticleListPresenterImpl(repository);
+    }
+
+
 }

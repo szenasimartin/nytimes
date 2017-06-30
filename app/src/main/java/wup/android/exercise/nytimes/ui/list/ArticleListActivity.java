@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 
@@ -38,10 +39,10 @@ import wup.android.exercise.nytimes.ui.adapters.ArticleAdapter;
 
 import javax.inject.Inject;
 
-public class ArticleListActivity extends RxAppCompatActivity {
+public class ArticleListActivity extends RxAppCompatActivity implements ArticleListView {
 
     @Inject
-    NYTimesRepository nyTimesRepository;
+    ArticleListPresenter presenter;
 
     private boolean twoPane;
     private RecyclerView recyclerView;
@@ -54,52 +55,43 @@ public class ArticleListActivity extends RxAppCompatActivity {
     private boolean isSearchOpened = false;
     private EditText edtSeach;
     private ArticleAdapter adapter;
+    private ProgressBar progressView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_article_list);
         AppComponentInjector.getDefault().component().inject(this);
-
+        presenter.attachView(this);
+        setContentView(R.layout.activity_article_list);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
-
+        progressView = (ProgressBar) findViewById(R.id.progressView);
         recyclerView = (RecyclerView) findViewById(R.id.article_list);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.VERTICAL);
         recyclerView.addItemDecoration(dividerItemDecoration);
-        nyTimesRepository.getMostViewedArticles("all-sections", 7)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doAfterTerminate(new Action0() {
-                    @Override
-                    public void call() {
-                        //progressView.visibility = View.GONE;
-                    }
-                })
-                .compose(this.<MostViewedArticleResponse>bindToLifecycle())
-                .subscribe(new Observer<MostViewedArticleResponse>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-
-                    @Override
-                    public void onNext(MostViewedArticleResponse mostViewedArticleResponse) {
-                        setupRecyclerView(mostViewedArticleResponse);
-                    }
-                });
+        presenter.getMostViewedArticles(this);
 
         if (findViewById(R.id.article_detail_container) != null) {
             twoPane = true;
         }
         initNavigationDrawer();
+    }
+
+    @Override
+    public void showLoading() {
+        progressView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        progressView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onShowArticles(MostViewedArticleResponse response) {
+        setupRecyclerView(response);
     }
 
     private void initNavigationDrawer() {
@@ -216,5 +208,9 @@ public class ArticleListActivity extends RxAppCompatActivity {
         adapter.filter(s);
     }
 
-
+    @Override
+    protected void onDestroy() {
+        presenter.deattachView();
+        super.onDestroy();
+    }
 }
