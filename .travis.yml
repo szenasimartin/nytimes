@@ -1,0 +1,42 @@
+language: android
+jdk: oraclejdk8
+sudo: false
+android:
+  components:
+  - platform-tools
+  - tools
+  - build-tools-25.0.2
+  - android-22
+  - android-25
+  - sys-img-armeabi-v7a-android-22
+  - extra-android-m2repository
+before_script:
+- echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+- emulator -avd test -no-skin -no-audio -no-window &
+- android-wait-for-emulator
+- adb shell input keyevent 82 &
+before_install:
+- chmod +x gradlew
+script: "./gradlew clean build connectedAndroidTest -PdisablePreDex --stacktrace"
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+cache:
+  directories:
+  - "$HOME/.m2"
+  - "$HOME/.gradle"
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+deploy:
+  provider: releases
+  api_key:
+    secure: WzkbHMwYyPxkK/tpgFubOGrOMl+0uhNX8edSLQHf0I75SAzxAMGpQp6+Bj9gHfGPAMgFOE9si0wd27CngLNiSniRObqHl7BC3tdr7F/mrc1ihHNusv9Sqq4EssuVjO6/z5R+a72sciMAgXzP9k9OV+Su2WuSisNJJZ4ozbPwmNzeDByiNTO4FDrVVZCaAz7kojYOfEWA90UuMv3ej4GV9r1ZvcXpcAJuBB2Ott8eXhHhLBtmlV0GzymeNmVCwiRuYxelO+0S8OuPtLWnE8Cg/VmnyqyUVACglnfeS7opas9gqGdtJeJ4NQJ3tfqhZcpjb9z7G09YMWghIWW5NCZ6hZpnG7qaa+NesSLlITVq2lbrvZZKCW0jG+FeCbgNJ0jH2di08PSNs+CgE0YnhbW3nEZ0ftwQ5Cfw/P7ivtJ7/lLOgS1BG9EkXWXxiTHBOxwqQoi7cYgB+NSlmgf2gFG7iAL5qMJ+Edp8QHlh4lEanOVBA3BY2AnlXnwRbU6OC0lp7LD//nLRG4OV1gKhVwChn5o6zZGKXX3IYLPG0KmVpirvVjq/+h8FPhpK/iS5sTRyLLbtcPj8FxDDlcKY6KgP/Y0oOLqRclewwv4Z3U9mSm6QJ8gQ+YjSRfoGnBFowh89zNZaSk7Fypem7x0qjY80b+dn5Ibm638TqabTsBvJ3sE=
+  file: app/build/outputs/apk/yourapp*release*.apk
+  file_glob: "true"
+  skip_cleanup: true
+  on:
+    branch: master
+    repo: szenasimartin/nytimes
+
+after_success:
+- sh set_tags.sh
