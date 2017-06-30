@@ -55,7 +55,7 @@ public class ArticleAdapter
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.item = values.get(position);
         holder.title.setText(values.get(position).getTitle());
-        if (values.get(position).getByline()!=null) {
+        if (values.get(position).getByline() != null) {
             holder.created.setText(values.get(position).getByline());
         }
 
@@ -85,7 +85,7 @@ public class ArticleAdapter
                     intent.putExtra(ArticleDetailFragment.ARG_ITEM_URL, holder.item.getUrl());
                     intent.putExtra(ArticleDetailFragment.ARG_ITEM_TITLE, holder.item.getTitle());
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((AppCompatActivity)context, holder.title, holder.title.getTransitionName());
+                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation((AppCompatActivity) context, holder.title, holder.title.getTransitionName());
                         context.startActivity(intent, options.toBundle());
                     } else {
                         context.startActivity(intent);
@@ -127,12 +127,12 @@ public class ArticleAdapter
 
     public void filter(String text) {
         values.clear();
-        if(text.isEmpty()){
+        if (text.isEmpty()) {
             values.addAll(itemsCopy);
-        } else{
+        } else {
             text = text.toLowerCase();
-            for(Article item: itemsCopy){
-                if(item.getTitle().toLowerCase().contains(text)){
+            for (Article item : itemsCopy) {
+                if (item.getTitle().toLowerCase().contains(text)) {
                     values.add(item);
                 }
             }

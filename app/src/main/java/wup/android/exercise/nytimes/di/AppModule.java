@@ -37,9 +37,9 @@ public class AppModule {
     @Singleton
     OkHttpClient provideOkHttpClient() {
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        }else{
+        } else {
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.NONE);
         }
         return new OkHttpClient.Builder()

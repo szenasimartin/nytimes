@@ -121,6 +121,7 @@ public class ArticleListActivity extends RxAppCompatActivity {
         mSearchAction = menu.findItem(R.id.action_search);
         return super.onPrepareOptionsMenu(menu);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -144,10 +145,10 @@ public class ArticleListActivity extends RxAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    protected void handleMenuSearch(){
+    protected void handleMenuSearch() {
         ActionBar action = getSupportActionBar();
 
-        if(isSearchOpened){
+        if (isSearchOpened) {
 
             action.setDisplayShowCustomEnabled(false);
             action.setDisplayShowTitleEnabled(true);
@@ -156,7 +157,7 @@ public class ArticleListActivity extends RxAppCompatActivity {
             edtSeach.clearFocus();
             View view = this.getCurrentFocus();
             if (view != null) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
             }
 
@@ -171,7 +172,7 @@ public class ArticleListActivity extends RxAppCompatActivity {
             action.setCustomView(R.layout.search_bar);
             action.setDisplayShowTitleEnabled(false);
 
-            edtSeach = (EditText)action.getCustomView().findViewById(R.id.edtSearch);
+            edtSeach = (EditText) action.getCustomView().findViewById(R.id.edtSearch);
             edtSeach.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -204,7 +205,7 @@ public class ArticleListActivity extends RxAppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(isSearchOpened) {
+        if (isSearchOpened) {
             handleMenuSearch();
             return;
         }
