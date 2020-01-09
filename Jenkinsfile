@@ -16,6 +16,7 @@ pipeline {
             steps {
                 sh 'id'
                 sh 'whoami'
+                sh 'groups'
             }
         }
         stage('Build') {
