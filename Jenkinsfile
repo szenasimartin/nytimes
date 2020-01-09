@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'adb_demo'
+            image 'adb-demo2'
             args '-ti --privileged'}
     }
     environment {
