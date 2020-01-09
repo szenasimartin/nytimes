@@ -5,9 +5,11 @@ pipeline {
             args '-ti --privileged'}
     }
     stages {
-        stage('Test') {
+        stage('Build') {
             steps {
-                sh 'adb root; adb devices'
+                checkout scm
+                sh '''#!/bin/bash
+                $WORKSPACE/scripts/build.sh
             }
         }
     }
