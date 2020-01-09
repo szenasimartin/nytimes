@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'adb-demo2'
+            image 'adb_demo3'
             args '-ti --privileged -v /dev/bus/usb:/dev/bus/usb'}
     }
     environment {
@@ -11,6 +11,7 @@ pipeline {
         stage('env') {
             steps {
                 sh 'id'
+                sh 'whoami'
             }
         }
         stage('Build') {
