@@ -1,6 +1,8 @@
 pipeline {
     agent {
-        docker { image 'adb_demo' }
+        docker {
+            image 'adb_demo'
+            args '--privileged'}
     }
     stages {
         stage('Test') {
