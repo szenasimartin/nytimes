@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'adb_demo8'
+            image 'adb_demo9'
             args '-ti --privileged -v /dev/bus/usb:/dev/bus/usb'}
     }
     environment {
