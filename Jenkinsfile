@@ -11,8 +11,6 @@ pipeline {
         stage('env') {
             steps {
                 sh 'id'
-                sh 'whoami'
-                sh 'pwd'
             }
         }
         stage('Build') {
