@@ -10,6 +10,7 @@ pipeline {
                 checkout scm
                 sh '''#!/bin/bash
                 $WORKSPACE/scripts/build.sh
+                '''
             }
         }
     }
